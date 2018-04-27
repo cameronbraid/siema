@@ -497,7 +497,8 @@ export default class Siema {
    */
   mousedownHandler(e) {
     // Prevent dragging / swiping on inputs, selects and textareas
-    const ignoreSiema = ['TEXTAREA', 'OPTION', 'INPUT', 'SELECT'].indexOf(e.target.nodeName) !== -1;
+    const ignoreSiema = ['TEXTAREA', 'OPTION', 'INPUT', 'SELECT'].indexOf(e.target.
+                                                                         ) !== -1;
     if (ignoreSiema) {
       return;
     }
@@ -533,9 +534,15 @@ export default class Siema {
       // if dragged element is a link
       // mark preventClick prop as a true
       // to detemine about browser redirection later on
-      if (e.target.nodeName === 'A') {
-        this.drag.preventClick = true;
-      }
+
+      let target = e.target
+      do {
+        if (target.nodeName === 'A') {
+          this.drag.preventClick = true;
+          break
+        }
+        target = target.parentNode
+      } while (target != null)
 
       this.drag.endX = e.pageX;
       this.selector.style.cursor = '-webkit-grabbing';
